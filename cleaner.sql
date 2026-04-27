@@ -1013,6 +1013,40 @@ select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega from pedido 
 
 
 
+
+
+
+/* RETO I  Genera un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
+Utilizando la función ADDDATE de MySQL.
+Utilizando la función DATEDIFF de MySQL.
+¿Sería posible resolver esta consulta utilizando el operador de suma + o resta -?*/
+/*RESPUESTA:
+Sí es posible utilizar operadores de suma o resta con fechas, pero no es recomendable. Lo correcto es usar funciones como DATEDIFF o ADDDATE, ya que garantizan mayor precisión y compatibilidad en MySQL.*/
+
+SHOW TABLES;
+
+describe pedido;
+
+select * from pedido;
+
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
+from pedido;
+
+/*RESPUESTA (ADDDATE)*/
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
+from pedido
+where fecha_entrega <= ADDDATE(fecha_esperada, INTERVAL -2 DAY);
+
+/*RESPUESTA (DATEDIFF)*/
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
+from pedido
+where DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
+
+
+
+
+
+
 /* RETO J - Genera un listado de todos los pedidos que fueron rechazados en 2009. */
 
 show tables;
@@ -1021,5 +1055,87 @@ select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comen
 select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comentarios, codigo_cliente from pedido where estado = 'Rechazado' AND YEAR(fecha_pedido) = 2009;
 
 
+
+
+
+
+/*RETO K. Genera un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier año.*/
+
+show tables;
+
+describe pedido;
+
+select * from pedido;
+
+select codigo_pedido, fecha_entrega
+from pedido;
+
+select *
+from pedido
+where month(fecha_entrega) = 1;
+
+/*RETO L. Genera un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.*/
+
+show tables;
+
+describe pago;
+
+select * from pago;
+
+select codigo_cliente, forma_pago, fecha_pago, total
+from pago;
+
+select *
+from pago
+where year(fecha_pago) = 2008
+and forma_pago = 'Paypal'
+order by total desc;
+
+/*RETO M. Genera un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.*/
+
+show tables;
+
+describe pago;
+
+select * from pago;
+
+select forma_pago
+from pago;
+
+select distinct forma_pago
+from pago;
+
+/*RETO N. Genera un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.*/
+
+show tables;
+
+describe producto;
+
+select * from producto;
+
+select nombre, gama, cantidad_en_stock, precio_venta
+from producto;
+
+select *
+from producto
+where gama = 'Ornamentales'
+and cantidad_en_stock > 100
+order by precio_venta DESC;
+
+/*RETO O. Genera un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.*/
+
+show tables;
+
+describe cliente;
+
+select * from cliente;
+
+select nombre_cliente, ciudad, codigo_empleado_rep_ventas
+from cliente;
+
+select *
+from cliente
+where ciudad = 'Madrid'
+and codigo_empleado_rep_ventas in (11, 30);
 
 
