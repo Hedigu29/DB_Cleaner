@@ -994,12 +994,25 @@ describe pedido;
 select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comentarios, codigo_cliente from pedido;
 select DISTINCT estado from pedido;
 
-/* RETO G - Genera un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. */
+/* G. Genera un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
+
+Utilizando la función YEAR de MySQL.
+Utilizando la función DATE_FORMAT de MySQL. *Sin utilizar ninguna de las funciones anteriores. */
+
 
 show tables;
 describe pago;
 select codigo_cliente, forma_pago, id_transaccion, fecha_pago, total from pago;
-select  codigo_cliente from pago where YEAR(fecha_pago) = 2008;
+
+-- Utilizando la función YEAR de MySQL:
+select DISTINCT codigo_cliente from pago where YEAR(fecha_pago) = 2008;
+
+-- Utilizando la función DATE_FORMAT de MySQL:
+select DISTINCT codigo_cliente from pago where DATE_FORMAT(fecha_pago, '%Y') = '2008';
+
+-- Sin utilizar ninguna de las funciones anteriores:
+select DISTINCT codigo_cliente from pago where fecha_pago BETWEEN '2008-01-01' AND '2008-12-31';
+
 
 
 /* RETO H - Genera un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo. */
@@ -1007,34 +1020,36 @@ select  codigo_cliente from pago where YEAR(fecha_pago) = 2008;
 show tables;
 describe pedido;
 select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comentarios, codigo_cliente from pedido;
-select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega from pedido where fecha_entrega > fecha_esperada;
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega, estado 
+from pedido 
+where fecha_entrega > fecha_esperada;
 
 
 
-
-
-
-/* RETO I  Genera un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.*/
-
-SHOW TABLES;
-
+/* RETO I  Genera un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
+Utilizando la función ADDDATE de MySQL.
+Utilizando la función DATEDIFF de MySQL.
+¿Sería posible resolver esta consulta utilizando el operador de suma + o resta -?*/
+/*RESPUESTA:
+Sí es posible utilizar operadores de suma o resta con fechas, pero no es recomendable. Lo correcto es usar funciones como DATEDIFF o ADDDATE, ya que garantizan mayor precisión y compatibilidad en MySQL.*/
+show tables;
 describe pedido;
 
-select * from pedido;
 
-select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
-from pedido;
-
-
+-- Utilizando la función ADDDATE de MySQL:
 select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
 from pedido
 where fecha_entrega <= ADDDATE(fecha_esperada, INTERVAL -2 DAY);
 
-
+-- Utilizando la función DATEDIFF de MySQL:
 select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
 from pedido
 where DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
 
+-- Utilizando el operador resta -:
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
+from pedido
+where (fecha_esperada - fecha_entrega) >= 2;
 
 
 
