@@ -1052,7 +1052,7 @@ where DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
 show tables;
 describe pedido;
 select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comentarios, codigo_cliente from pedido;
-select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comentarios, codigo_cliente from pedido where estado = 'Rechazado' AND YEAR(fecha_pedido) = 2009;
+select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comentarios, codigo_cliente from pedido where estado = 'Rechazado' and year(fecha_pedido) = 2009;
 
 
 
