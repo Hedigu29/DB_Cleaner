@@ -994,9 +994,7 @@ describe pedido;
 select codigo_pedido, fecha_pedido, fecha_esperada, fecha_entrega, estado, comentarios, codigo_cliente from pedido;
 select DISTINCT estado from pedido;
 
-/* RETO G - Genera un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
-
-Utilizando la función YEAR de MySQL. */
+/* RETO G - Genera un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. */
 
 show tables;
 describe pago;
@@ -1016,12 +1014,7 @@ select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega from pedido 
 
 
 
-/* RETO I  Genera un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
-Utilizando la función ADDDATE de MySQL.
-Utilizando la función DATEDIFF de MySQL.
-¿Sería posible resolver esta consulta utilizando el operador de suma + o resta -?*/
-/*RESPUESTA:
-Sí es posible utilizar operadores de suma o resta con fechas, pero no es recomendable. Lo correcto es usar funciones como DATEDIFF o ADDDATE, ya que garantizan mayor precisión y compatibilidad en MySQL.*/
+/* RETO I  Genera un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.*/
 
 SHOW TABLES;
 
@@ -1032,12 +1025,12 @@ select * from pedido;
 select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
 from pedido;
 
-/*RESPUESTA (ADDDATE)*/
+
 select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
 from pedido
 where fecha_entrega <= ADDDATE(fecha_esperada, INTERVAL -2 DAY);
 
-/*RESPUESTA (DATEDIFF)*/
+
 select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega
 from pedido
 where DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
